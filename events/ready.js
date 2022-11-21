@@ -1,0 +1,43 @@
+const { REST, Routes, Events } = require('discord.js');
+const { clientId, token } = require('../config.json');
+const fs = require('node:fs');
+const chalk = require('chalk');
+
+module.exports = {
+	name: Events.ClientReady,
+	once: true,
+	async execute(client) {
+		const commands = [];
+		// Grab all the command files from the commands directory you created earlier
+		const commandFiles = fs.readdirSync(`${__dirname}/../commands`).filter(file => file.endsWith('.js'));
+
+		// Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
+		for (const file of commandFiles) {
+			const command = require(`../commands/${file}`);
+			commands.push(command.data.toJSON());
+		}
+
+		// Construct and prepare an instance of the REST module
+		const rest = new REST({ version: '10' }).setToken(token);
+
+		// and deploy your commands!
+
+		try {
+			console.log(`\n${chalk.blue.dim('[INFO]')} Started refreshing ${commands.length} application (/) commands.`);
+
+			// The put method is used to fully refresh all commands in the guild with the current set
+			const data = await rest.put(
+				Routes.applicationCommands(clientId),
+				{ body: commands },
+			);
+
+			console.log(`${chalk.blue('[INFO]')} ${chalk.green('Successfully')} reloaded ${data.length} application (/) commands.`);
+		}
+		catch (error) {
+			// And of course, make sure you catch and log any errors!
+			console.error(error);
+		}
+		console.log(`\n${chalk.green.bold('[READY]')} Logged in as ${client.user.tag} (${client.user.id})`);
+		console.log(`${chalk.blue.dim('[INVITE]')} https://discord.com/api/oauth2/authorize?client_id=${client.user.id}&permissions=8&scope=applications.commands%20bot`);
+	},
+};
