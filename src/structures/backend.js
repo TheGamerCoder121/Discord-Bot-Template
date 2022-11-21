@@ -3,8 +3,8 @@ require('hyperz-verbatim').setExtension('.gamer');
 const figlet = require('figlet');
 const chalk = require('chalk');
 const axios = require('axios');
-const pjson = require('./package.json');
-const config = require('./config.json');
+const pjson = require('../../package.json');
+const config = require('../../config.json');
 const os = require('os');
 
 async function init() {
@@ -12,7 +12,7 @@ async function init() {
 	// require('./licenseService.gamer')(config.licenseKey, 'DtvrGSM82nS76P', { log: true });
 	// eslint-disable-next-line no-undef
 	const font = await maths(['Graffiti', 'Standard', 'Stop', 'Slant', 'Pagga', 'Larry 3D']);
-	figlet.text('Listing Bot', { font: font, width: 700 }, function(err, data) {
+	figlet.text('Multi Purpose Bot', { font: font, width: 700 }, function(err, data) {
 		if (err) throw err;
 		const str = `${data}\n-------------------------------------------`;
 		console.log(chalk.bold(chalk.blueBright(str)));
