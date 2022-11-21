@@ -1,7 +1,7 @@
 const path = require('path');
 const { promisify } = require('util');
 const glob = promisify(require('glob'));
-const Event = require('./Event.js');
+// const Event = require('./Event.js');
 const fs = require('node:fs');
 
 module.exports = class Util {
@@ -40,28 +40,29 @@ module.exports = class Util {
 	}
 
 	async loadCommands() {
-		const commandsPath = path.join(__dirname, 'commands');
+		const commandsPath = path.join(__dirname, '/../commands');
 		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
 		for (const file of commandFiles) {
 			const filePath = path.join(commandsPath, file);
 			const command = require(filePath);
-			this.commands.set(command.data.name, command);
+			this.client.commands.set(command.data.name, command);
 		}
 	}
 	async loadEvents() {
-		return glob(`${this.directory}events/**/*.js`).then(events => {
-			for (const eventFile of events) {
-				delete require.cache[eventFile];
-				const { name } = path.parse(eventFile);
-				const File = require(eventFile);
-				if (!this.isClass(File)) throw new TypeError(`Event ${name} doesn't export a class!`);
-				const event = new File(this.client, name);
-				if (!(event instanceof Event)) throw new TypeError(`Event ${name} doesn't belong in Events directory.`);
-				this.client.events.set(event.name, event);
-				event.emitter[event.type](name, (...args) => event.run(...args));
+		const eventsPath = path.join(__dirname, '/../events');
+		const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
+		
+		for (const file of eventFiles) {
+			const filePath = path.join(eventsPath, file);
+			const event = require(filePath);
+			if (event.once) {
+				this.client.once(event.name, (...args) => event.execute(...args));
 			}
-		});
+			else {
+				this.client.on(event.name, (...args) => event.execute(...args));
+			}
+		}
 	}
 
 };

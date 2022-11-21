@@ -1,5 +1,5 @@
 /* eslint-disable max-statements-per-line */
-const { Client, Collection } = require('discord.js');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const Util = require('./Util.js');
 const config = require('../../config');
 
@@ -8,6 +8,7 @@ module.exports = class MrGamerClient extends Client {
 	constructor(options = {}) {
 		super({
 			disableMentions: 'everyone',
+			intents: [GatewayIntentBits.Guilds],
 		});
 		this.validate(options);
 
@@ -18,6 +19,7 @@ module.exports = class MrGamerClient extends Client {
 		this.utils = new Util(this);
 
 		this.config = config;
+
 	}
 	validate(options) {
 		if (typeof options !== 'object') throw new TypeError('Options should be a type of Object.');
