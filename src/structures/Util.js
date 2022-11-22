@@ -1,8 +1,7 @@
 const path = require('path');
-const { promisify } = require('util');
-const glob = promisify(require('glob'));
 // const Event = require('./Event.js');
 const fs = require('node:fs');
+const glob = require('glob');
 
 module.exports = class Util {
 
@@ -40,19 +39,25 @@ module.exports = class Util {
 	}
 
 	async loadCommands() {
-		const commandsPath = path.join(__dirname, '/../commands');
-		const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
-
-		for (const file of commandFiles) {
-			const filePath = path.join(commandsPath, file);
-			const command = require(filePath);
-			this.client.commands.set(command.data.name, command);
-		}
+		const commandsPath = path.join(__dirname, '/../commands/');
+		glob(`${commandsPath}/**/*.js`, function(er, files) {
+			for (const file of files) {
+				// const filePath = path.join(commandsPath, file);
+				const command = require(file);
+				this.commands.set(command.data.name, command);
+			}
+		});
+		// const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+		// for (const file of commandFiles) {
+		// 	const filePath = path.join(commandsPath, file);
+		// 	const command = require(filePath);
+		// 	this.client.commands.set(command.data.name, command);
+		// }
 	}
 	async loadEvents() {
 		const eventsPath = path.join(__dirname, '/../events');
 		const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith('.js'));
-		
+
 		for (const file of eventFiles) {
 			const filePath = path.join(eventsPath, file);
 			const event = require(filePath);
