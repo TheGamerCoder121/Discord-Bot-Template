@@ -1,6 +1,7 @@
 /* eslint-disable max-statements-per-line */
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
 const Util = require('./Util.js');
+const backend = require('./backend.js');
 const config = require('../../config');
 
 module.exports = class MrGamerClient extends Client {
@@ -29,9 +30,10 @@ module.exports = class MrGamerClient extends Client {
 	}
 
 	async start(token = this.token) {
+		// backend.init();
+		super.login(token);
 		this.utils.loadCommands();
 		this.utils.loadEvents();
-		super.login(token);
 	}
 
 };
