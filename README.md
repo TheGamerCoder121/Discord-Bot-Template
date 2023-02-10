@@ -18,15 +18,23 @@
                 alt="GitHub Badge" />
         </a>
     </div>
-    <div id="badges">
-    <a>
-      <img src="https://img.shields.io/librariesio/github/TheGamerCoder121/Discord-Bot-Template?style=for-the-badge" alt="" />
-    </a>
+
+
+ <img src="https://img.shields.io/librariesio/github/TheGamerCoder121/Discord-Bot-Template?style=for-the-badge" alt="" />
+
 
     
-    <a href="https://hits.sh/github.com/TheGamerCoder121/Discord-Bot-Template/"><img alt="Hits" src="https://hits.sh/github.com/TheGamerCoder121/Discord-Bot-Template.svg?style=for-the-badge"/></a>
+<a href="https://hits.sh/github.com/TheGamerCoder121/Discord-Bot-Template/">
+        <img alt="Hits" src="https://hits.sh/github.com/TheGamerCoder121/Discord-Bot-Template.svg?style=for-the-badge"/>
+        </a>
 
-   </div>
+
 
 </div>
-<div align="center">
+
+
+This is a basic Discord.JS v14 Bot Template. This project includes a basic command handler and event handler along with some sample commands.
+
+
+
+
