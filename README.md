@@ -32,6 +32,7 @@
 
 </div>
 
+---
 
 This is a basic Discord.JS v14 Bot Template. This project includes a basic command handler and event handler along with some sample commands.
 
